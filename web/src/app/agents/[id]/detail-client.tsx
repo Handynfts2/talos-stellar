@@ -7,7 +7,7 @@ import { AgentAvatar } from "@/components/agent-avatar";
 import { AgentLifecyclePanel } from "@/components/agent-lifecycle-panel";
 import { AgentAvailabilityBadge } from "@/components/agent-availability-badge";
 import { AgentEmptyState } from "@/components/agent-view-states";
-import { OPERATOR_PUBLIC_KEY, USDC_ISSUER as STELLAR_USDC_ISSUER } from "@/lib/stellar-config";
+import { OPERATOR_PUBLIC_KEY, USDC_ISSUER as STELLAR_USDC_ISSUER, explorerTxUrl } from "@/lib/stellar-config";
 
 
 interface ServiceInfo {
@@ -1424,7 +1424,21 @@ export function TalosDetailClient({ talos }: { talos: TalosDetail }) {
                 <p className="text-sm text-foreground mb-2">Purchase Complete</p>
                 <p className="text-xs text-muted mb-4">{buyResult.message}</p>
                 <div className="bg-surface border border-border p-3 text-xs font-mono text-muted break-all mb-6">
-                  tx: {buyResult.txHash.slice(0, 18)}...{buyResult.txHash.slice(-8)}
+                  {(() => {
+                    const url = explorerTxUrl(buyResult.txHash);
+                    return url ? (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline"
+                      >
+                        tx: {buyResult.txHash.slice(0, 18)}...{buyResult.txHash.slice(-8)}
+                      </a>
+                    ) : (
+                      <span>tx: {buyResult.txHash.slice(0, 18)}...{buyResult.txHash.slice(-8)}</span>
+                    );
+                  })()}
                 </div>
                 <button
                   onClick={closeBuyModal}
@@ -1532,7 +1546,21 @@ export function TalosDetailClient({ talos }: { talos: TalosDetail }) {
                   job: {serviceResult.jobId}
                 </div>
                 <div className="bg-surface border border-border p-3 text-xs font-mono text-muted break-all mb-6">
-                  tx: {serviceResult.txHash.slice(0, 18)}...{serviceResult.txHash.slice(-8)}
+                  {(() => {
+                    const url = explorerTxUrl(serviceResult.txHash);
+                    return url ? (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline"
+                      >
+                        tx: {serviceResult.txHash.slice(0, 18)}...{serviceResult.txHash.slice(-8)}
+                      </a>
+                    ) : (
+                      <span>tx: {serviceResult.txHash.slice(0, 18)}...{serviceResult.txHash.slice(-8)}</span>
+                    );
+                  })()}
                 </div>
                 {serviceResult.status === "completed" && serviceResult.result ? (
                   <div className="bg-surface border border-accent/20 p-4 text-left mb-4">
