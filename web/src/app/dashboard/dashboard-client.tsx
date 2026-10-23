@@ -3,9 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { WalletGate, useWallet } from "@/components/wallet-gate";
 import { AgentAvatar } from "@/components/agent-avatar";
-import { FinancialProjectionChart } from "@/components/financial-projection-chart";
+import { LazyFinancialProjectionChart } from "@/components/lazy-financial-projection-chart";
 import { explorerTxUrl } from "@/lib/stellar-config";
-
 interface DashboardData {
   stats: {
     totalValue: string;
@@ -465,7 +464,7 @@ function DashboardContent({ stats, approvals: initialApprovals, approvalHistory:
             ) : (
               <div className="space-y-6">
                 {talosManagement.slice(0, 3).map((talos) => (
-                  <FinancialProjectionChart key={talos.id} talosId={talos.id} />
+                  <LazyFinancialProjectionChart key={talos.id} talosId={talos.id} />
                 ))}
               </div>
             )}
